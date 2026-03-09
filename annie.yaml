@@ -1,0 +1,24 @@
+---
+- name: Update Debian packages
+  hosts: debian_vms
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+    - name: Update apt package cache
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade all packages
+      ansible.builtin.apt:
+        upgrade: dist
+
+    - name: Remove unused packages
+      ansible.builtin.apt:
+        autoremove: yes
+
+    - name: Clean apt cache
+      ansible.builtin.apt:
+        autoclean: yes
